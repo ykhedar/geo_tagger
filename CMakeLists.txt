@@ -20,12 +20,7 @@ find_package( Boost REQUIRED COMPONENTS
 
 add_definitions(-std=c++11)
 
-catkin_package( CATKIN_DEPENDS
-  roscpp
-  roslib
-  message_runtime
-        std_msgs sensor_msgs
-)
+
 
 add_message_files(
         FILES
@@ -38,6 +33,13 @@ generate_messages(
         geometry_msgs
         sensor_msgs
 )
+
+catkin_package( CATKIN_DEPENDS
+        roscpp
+        roslib
+        message_runtime
+        std_msgs sensor_msgs
+        )
 
 include_directories(
   ${catkin_INCLUDE_DIRS}

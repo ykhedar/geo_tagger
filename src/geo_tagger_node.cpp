@@ -37,7 +37,7 @@ GeoTagger::GeoTagger(): mImgCount(0), mSaveStartSrvOn_(false), mTimer(std::chron
   mCurrentHeadingSubscriber    = mNH.subscribe(ar_head_topic, 200,&GeoTagger::arHeadingCb, this);
   mBaroHeightSubscriber        = mNH.subscribe(ar_baro_topic, 200,&GeoTagger::arBaroHeightCb, this);
   mGPSSubscriber               = mNH.subscribe(gps_topic,200,&GeoTagger::gpsCb, this);
-  mGeoImgPublisher = mNH.advertise<custom_msgs::GeoImageCompressed>(mGeoImgTopic,200);
+  mGeoImgPublisher = mNH.advertise<geo_tagger::GeoImageCompressed>(mGeoImgTopic,200);
   ROS_INFO_STREAM("\n" << "GeoTagger has been successfully created."  << "\n" \
   				  "Image Topic Subscribed is: 	   " << mImgTopic    	<< "\n" \
   				  "Camera Name is:				   " << mCamName 	    << "\n" \
@@ -121,8 +121,6 @@ bool GeoTagger::startGeoSave(std_srvs::Trigger::Request& req, std_srvs::Trigger:
 {
   mSaveStartSrvOn_ = true;
   res.success = mSaveStartSrvOn_;
-  ROS_INFO_STREAM("Requested (startGeoSave) and succeded. MissionId is: " << mMissionCount);
-  LOG_S(INFO)<<"Requested (startGeoSave) and succeded. MissionId is: " << mMissionCount;
   mImgSaveLocation = getFlightSaveLocation(mFileNameStart, 0, "ankdata_drone");
   createSaveLocation(mImgSaveLocation);
   mImgInfo.mProjectName = mImgSaveLocation.substr(mImgSaveLocation.size()-13);

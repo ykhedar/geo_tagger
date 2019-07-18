@@ -1,32 +1,28 @@
 <?xml version="1.0"?>
 <launch>
 
-    <arg name="flight_node" default="geo_tagger_flight_manta_node"/>
+    <arg name="node_name" default="geo_tagger_node"/>
     <arg name="output" default="screen"/>
-    <arg name="gps_topic" default="/tripos/singlepos/fix1"/>
-    <arg name="image_topic" default="/manta/camera/image_color_resized/image/compressed"/>
+    <arg name="gps_topic" default="/tripos/singlepos/fix"/>
+    <arg name="image_topic" default="/manta/camera/image_color/compressed"/>
     <arg name="geoimage_topic" default="/geo_image_manta"/>
     <arg name="camera_name" default="manta"/>
     <arg name="flight_save_start_srv" default="/start_save_manta_flight"/>
     <arg name="flight_save_stop_srv" default="/stop_save_manta_flight"/>
-
     <arg name="ar_head_topic" default="/ar_heading"/>
     <arg name="ar_baro_topic" default="/ar_baro_height"/>
-    <arg name="mission_state_topic" default="/my_state"/>
     <arg name="gps_dummy" default="false"/>
 
     <!-- Node -->
-    <node pkg="geo_tagger" type="geo_tagger_node" name="$(arg flight_node)" output="$(arg output)">
+    <node pkg="geo_tagger" type="geo_tagger_node" name="$(arg node_name)" output="$(arg output)">
     	    <param name="gps_topic" type="string" value="$(arg gps_topic)"/>
     	    <param name="image_topic" type="string" value="$(arg image_topic)"/>
     	    <param name="geoimage_topic" type="string" value="$(arg geoimage_topic)"/>
     	    <param name="camera_name" type="string" value="$(arg camera_name)"/>
           <param name="flight_save_start_srv" type="string" value="$(arg flight_save_start_srv)"/>
           <param name="flight_save_stop_srv" type="string" value="$(arg flight_save_stop_srv)"/>
-
           <param name="ar_head_topic" type="string" value="$(arg ar_head_topic)"/>
           <param name="ar_baro_topic" type="string" value="$(arg ar_baro_topic)"/>
-          <param name="mission_state_topic" type="string" value="$(arg mission_state_topic)"/>
           <param name="gps_dummy" type="bool" value="$(arg gps_dummy)"/>
     </node>
 

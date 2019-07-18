@@ -10,8 +10,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "sensor_msgs/NavSatFix.h"
-#include "custom_msgs/GeoImageCompressed.h"
-#include "custom_msgs/PhotoScan.h"
+#include "geo_tagger/GeoImageCompressed.h"
 
 #include "std_srvs/Trigger.h"
 
@@ -67,7 +66,7 @@ class GeoTagger
     bool mGPSDummy;
     GeoTagData mGeoData;
     Timer mTimer;
-    custom_msgs::GeoImageCompressed mGeoImgROSMsg;
+    geo_tagger::GeoImageCompressed mGeoImgROSMsg;
     ros::NodeHandle mNH,mPrivateNH;
     ros::Publisher mGeoImgPublisher;
     ros::Subscriber mImgSubscriber;
