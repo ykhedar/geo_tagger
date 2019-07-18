@@ -56,13 +56,7 @@ GeoTagger::GeoTagger(): mImgCount(0), mSaveStartSrvOn_(false), mTimer(std::chron
       createSaveLocation(mImgSaveLocation);
   }
 
-  if(mCamName == "manta"){
-    mFileNameStart = "rgb";
-  }
-  else if (mCamName == "thermal")
-  {
-    mFileNameStart = "th";
-  }
+  mFileNameStart = "rgb";
 
 }
 

@@ -116,40 +116,19 @@ ExifTagData createExifData(ImageInfo aImgInfo, GeoTagData aGeoData)
   lExifTagData.mExifData["Exif.Image.ProcessingSoftware"] = "Exiv2 with ROS";   // Ascii
   // General Camera Info //
 
-  if (aImgInfo.mCamName.at(0) == 'm')                                    // m for manta
-  {
-      lExifTagData.mExifData["Exif.Image.Model"]    = "Manta G917C";            // Ascii
-      lExifTagData.mExifData["Exif.Image.Make"]     = "Allied Vision";          // Ascii
-      lExifTagData.mExifData["Exif.Image.ResolutionUnit"]   = "2";              // Short, 2 for inches
-      lExifTagData.mExifData["Exif.Image.XResolution"]    = "34413/10";         // Rational
-      lExifTagData.mExifData["Exif.Image.YResolution"]    = "34413/10";         // Rational
-      lExifTagData.mExifData["Exif.Photo.FocalPlaneXResolution"]    = "1355/1"; // Rational
-      lExifTagData.mExifData["Exif.Photo.FocalPlaneYResolution"]    = "1355/1"; // Rational
-      lExifTagData.mExifData["Exif.Photo.FocalPlaneResolutionUnit"]    = "3";   // short, 3 for cm
-      lExifTagData.mExifData["Exif.Photo.FocalLength"]    = "104/10";           // Rational
-      lExifTagData.mXmpData["Xmp.exif.cx"] = 677;
-      lExifTagData.mXmpData["Xmp.exif.cy"] = 846;
-      lExifTagData.mXmpData["Xmp.exif.fx"] = 1409;
-      lExifTagData.mXmpData["Xmp.exif.fy"] = 1409;
-
-  }
-  else if (aImgInfo.mCamName.at(0) == 't')                              // thermal
-  {
-      lExifTagData.mExifData["Exif.Image.Model"]    = "A65X";                   // Ascii
-      lExifTagData.mExifData["Exif.Image.Make"]     = "FLIR";                   // Ascii
-      lExifTagData.mExifData["Exif.Image.ResolutionUnit"]   = "2";              // Short, 2 for inches
-      lExifTagData.mExifData["Exif.Image.XResolution"]    = "74941/10";         // Rational
-      lExifTagData.mExifData["Exif.Image.YResolution"]    = "74941/10";         // Rational
-      lExifTagData.mExifData["Exif.Image.Orientation"]    = "180";              // Short
-      lExifTagData.mExifData["Exif.Photo.FocalLength"]    = "13/1";             // Rational
-      lExifTagData.mExifData["Exif.Photo.FocalPlaneXResolution"]    = "5885/10"; // Rational
-      lExifTagData.mExifData["Exif.Photo.FocalPlaneYResolution"]    = "5885/10"; // Rational
-      lExifTagData.mExifData["Exif.Photo.FocalPlaneResolutionUnit"]    = "3";   // short, 3 for cm
-      lExifTagData.mXmpData["Xmp.exif.cx"] = 256;
-      lExifTagData.mXmpData["Xmp.exif.cy"] = 320;
-      lExifTagData.mXmpData["Xmp.exif.fx"] = 765;
-      lExifTagData.mXmpData["Xmp.exif.fy"] = 765;
-  }
+  lExifTagData.mExifData["Exif.Image.Model"]    = "Manta G917C";            // Ascii
+  lExifTagData.mExifData["Exif.Image.Make"]     = "Allied Vision";          // Ascii
+  lExifTagData.mExifData["Exif.Image.ResolutionUnit"]   = "2";              // Short, 2 for inches
+  lExifTagData.mExifData["Exif.Image.XResolution"]    = "34413/10";         // Rational
+  lExifTagData.mExifData["Exif.Image.YResolution"]    = "34413/10";         // Rational
+  lExifTagData.mExifData["Exif.Photo.FocalPlaneXResolution"]    = "1355/1"; // Rational
+  lExifTagData.mExifData["Exif.Photo.FocalPlaneYResolution"]    = "1355/1"; // Rational
+  lExifTagData.mExifData["Exif.Photo.FocalPlaneResolutionUnit"]    = "3";   // short, 3 for cm
+  lExifTagData.mExifData["Exif.Photo.FocalLength"]    = "104/10";           // Rational
+  lExifTagData.mXmpData["Xmp.exif.cx"] = 677;
+  lExifTagData.mXmpData["Xmp.exif.cy"] = 846;
+  lExifTagData.mXmpData["Xmp.exif.fx"] = 1409;
+  lExifTagData.mXmpData["Xmp.exif.fy"] = 1409;
 
   std::vector<std::string> vect = rosGpsToExivString(aGeoData.mGPS);
   // General Tags
