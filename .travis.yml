@@ -22,8 +22,8 @@ env:
     - ROS_REPO=ros
     - CCACHE_DIR=$HOME/.ccache # enables C/C++ caching in industrial_ci
     #- ADDITIONAL_DEBS="libexiv2-dev"
-    - BEFORE_INIT='apt update && apt install exiv2'
-    #- BEFORE_INSTALL_TARGET_DEPENDENCIES='sh ./install_deps.sh'
+    #- BEFORE_INIT='apt update'
+    - BEFORE_INSTALL_TARGET_DEPENDENCIES='sh ./install_deps.sh'
   matrix: # each line is a job
     - ROS_DISTRO="kinetic"
     - ROS_DISTRO="melodic"
