@@ -37,7 +37,7 @@ matrix:
 install:
   - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
   - sudo apt update && sudo apt install exiv2 libexiv2-dev apt-utils
+  - sudo ./install_deps.sh
  
 script:
-  - sudo ./install_deps.sh
   - .industrial_ci/travis.sh
