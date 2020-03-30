@@ -23,7 +23,7 @@ env:
     - CCACHE_DIR=$HOME/.ccache # enables C/C++ caching in industrial_ci
     #   - ADDITIONAL_DEBS="libexiv2-dev"
     #   - BEFORE_INIT='sudo apt update && sudo apt install exiv2 libexiv2-dev'
-    - BEFORE_SCRIPT='./install_deps.sh'
+    #- BEFORE_SCRIPT='./install_deps.sh'
   matrix: # each line is a job
     - ROS_DISTRO="kinetic"
     - ROS_DISTRO="melodic"
@@ -39,4 +39,5 @@ install:
   - sudo apt update && sudo apt install exiv2 libexiv2-dev apt-utils
  
 script:
+  - ./install_deps.sh
   - .industrial_ci/travis.sh
