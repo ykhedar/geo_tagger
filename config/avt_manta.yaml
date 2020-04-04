@@ -1,0 +1,34 @@
+# Ascii: Name of the Camera Model.
+Model: "Manta G917C"
+
+# Ascii: Name of the Camera Make.
+Make: "Allied Vision"
+
+# Short: Unit of measurement for 2 is for inches.
+ResolutionUnit: "2"
+
+# Rational: The number of pixels per <ResolutionUnit> in the <ImageWidth> direction.
+#  When the image resolution is unknown, 72 [dpi] is designated.
+XResolution: "34413/10"
+
+# Rational: The number of pixels per <ResolutionUnit> in the <ImageLength> direction.
+# The same value as <XResolution> is designated.
+YResolution: "34413/10"
+
+# Rational: Number of pixels per FocalPlaneResolutionUnit (37392) in ImageWidth direction for main image.
+FocalPlaneXResolution: "1355/1"
+
+# Rational: Number of pixels per FocalPlaneResolutionUnit (37392) in ImageLength direction for main image.
+FocalPlaneYResolution: "1355/1"
+
+# Short: Unit of measurement for FocalPlaneXResolution(37390) and FocalPlaneYResolution(37391).
+FocalPlaneResolutionUnit: "3"
+
+# Rational: The actual focal length of the lens, in mm.
+FocalLength: "104/10"
+
+# XMP Tag: Principal Point
+cx: 677
+cy: 846
+fx: 1409
+fy: 1409

@@ -64,9 +64,9 @@ void GeoTagger::imageCb(const sensor_msgs::CompressedImageConstPtr& message)
 {
   if (mGPSDummy)
   {
-      mGeoData.mGPS.longitude = 10;
-      mGeoData.mGPS.latitude = 52;
-      mGeoData.mGPS.altitude = 10;
+      mGeoData.mGPS.longitude = 5;
+      mGeoData.mGPS.latitude = 5;
+      mGeoData.mGPS.altitude = 5;
       mTimer.reset();
   }
 
