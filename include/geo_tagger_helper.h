@@ -81,7 +81,7 @@ std::string getFlightSaveLocation(const std::string camera_name_, int mission_id
 {
 	std::stringstream fileLocation;
 	char *homedir = getpwuid(getuid())->pw_dir;
-	fileLocation << homedir << "/" << base_name_ << "/images/raw/" << dateTime() << "_f" << mission_id_<< "_raw_"  << camera_name_;
+	fileLocation << homedir << "/" << base_name_ << "/" << dateTime() << "_f" << mission_id_<< "_raw_"  << camera_name_;
   ROS_INFO("Images will be saved in: %s",fileLocation.str().c_str());
 
 	return fileLocation.str();
@@ -109,59 +109,43 @@ int createSaveLocation(const std::string save_location)
 	}
 }
 
-ExifTagData createExifData(ImageInfo aImgInfo, GeoTagData aGeoData)
+ExifTagData createExifData(ImageInfo aImgInfo, GeoTagData aGeoData, ExifTagData aExifTagData)
 {
-  ExifTagData lExifTagData;
-
-  lExifTagData.mExifData["Exif.Image.ProcessingSoftware"] = "Exiv2 with ROS";   // Ascii
+  aExifTagData.mExifData["Exif.Image.ProcessingSoftware"] = "Exiv2 with ROS";   // Ascii
   // General Camera Info //
-
-  lExifTagData.mExifData["Exif.Image.Model"]    = "Manta G917C";            // Ascii
-  lExifTagData.mExifData["Exif.Image.Make"]     = "Allied Vision";          // Ascii
-  lExifTagData.mExifData["Exif.Image.ResolutionUnit"]   = "2";              // Short, 2 for inches
-  lExifTagData.mExifData["Exif.Image.XResolution"]    = "34413/10";         // Rational
-  lExifTagData.mExifData["Exif.Image.YResolution"]    = "34413/10";         // Rational
-  lExifTagData.mExifData["Exif.Photo.FocalPlaneXResolution"]    = "1355/1"; // Rational
-  lExifTagData.mExifData["Exif.Photo.FocalPlaneYResolution"]    = "1355/1"; // Rational
-  lExifTagData.mExifData["Exif.Photo.FocalPlaneResolutionUnit"]    = "3";   // short, 3 for cm
-  lExifTagData.mExifData["Exif.Photo.FocalLength"]    = "104/10";           // Rational
-  lExifTagData.mXmpData["Xmp.exif.cx"] = 677;
-  lExifTagData.mXmpData["Xmp.exif.cy"] = 846;
-  lExifTagData.mXmpData["Xmp.exif.fx"] = 1409;
-  lExifTagData.mXmpData["Xmp.exif.fy"] = 1409;
 
   std::vector<std::string> vect = rosGpsToExivString(aGeoData.mGPS);
   // General Tags
-  lExifTagData.mExifData["Exif.Photo.DateTimeOriginal"]  = aImgInfo.mImgOrigTime;         // Ascii
-  lExifTagData.mExifData["Exif.Image.DateTimeOriginal"]  = aImgInfo.mImgOrigTime;         // Ascii
-  lExifTagData.mExifData["Exif.Image.DateTime"]  = aImgInfo.mImgOrigTime;                 // Ascii
-  lExifTagData.mExifData["Exif.Image.ImageNumber"]       = aImgInfo.mImgCount;            // Long
+  aExifTagData.mExifData["Exif.Photo.DateTimeOriginal"]  = aImgInfo.mImgOrigTime;         // Ascii
+  aExifTagData.mExifData["Exif.Image.DateTimeOriginal"]  = aImgInfo.mImgOrigTime;         // Ascii
+  aExifTagData.mExifData["Exif.Image.DateTime"]  = aImgInfo.mImgOrigTime;                 // Ascii
+  aExifTagData.mExifData["Exif.Image.ImageNumber"]       = aImgInfo.mImgCount;            // Long
 
   // GPS Tag Info //
-  lExifTagData.mExifData["Exif.GPSInfo.GPSVersionID"]      = vect[0];            // Byte
-  lExifTagData.mExifData["Exif.GPSInfo.GPSLatitudeRef"]    = vect[3];            // Ascii
-  lExifTagData.mExifData["Exif.GPSInfo.GPSLatitude"]       = vect[4];            // Rational
-  lExifTagData.mExifData["Exif.GPSInfo.GPSLongitudeRef"]   = vect[5];            // Ascii
-  lExifTagData.mExifData["Exif.GPSInfo.GPSLongitude"]      = vect[6];            // Rational
-  lExifTagData.mExifData["Exif.GPSInfo.GPSAltitudeRef"]    = vect[1];            // Byte
-  lExifTagData.mExifData["Exif.GPSInfo.GPSAltitude"]       = vect[2];            // Rational
-  lExifTagData.mXmpData["Xmp.exif.Heading"] = aGeoData.mCurrentHeading;
-  lExifTagData.mXmpData["Xmp.exif.RelativeAltitude"] = aGeoData.mCurrentBaroHeight;
-  lExifTagData.mXmpData["Xmp.exif.ProjectName"] = aImgInfo.mProjectName;
+  aExifTagData.mExifData["Exif.GPSInfo.GPSVersionID"]      = vect[0];            // Byte
+  aExifTagData.mExifData["Exif.GPSInfo.GPSLatitudeRef"]    = vect[3];            // Ascii
+  aExifTagData.mExifData["Exif.GPSInfo.GPSLatitude"]       = vect[4];            // Rational
+  aExifTagData.mExifData["Exif.GPSInfo.GPSLongitudeRef"]   = vect[5];            // Ascii
+  aExifTagData.mExifData["Exif.GPSInfo.GPSLongitude"]      = vect[6];            // Rational
+  aExifTagData.mExifData["Exif.GPSInfo.GPSAltitudeRef"]    = vect[1];            // Byte
+  aExifTagData.mExifData["Exif.GPSInfo.GPSAltitude"]       = vect[2];            // Rational
+  aExifTagData.mXmpData["Xmp.exif.Heading"] = aGeoData.mCurrentHeading;
+  aExifTagData.mXmpData["Xmp.exif.RelativeAltitude"] = aGeoData.mCurrentBaroHeight;
+  aExifTagData.mXmpData["Xmp.exif.ProjectName"] = aImgInfo.mProjectName;
 
   ROS_INFO_STREAM_THROTTLE(10,"Throttled Info.GPS Values in createExifData  "<<"Long: "<< vect[6]<< \
             " Lat: "<<vect[4]<<" Alt: "<<vect[2]);
 
-  return lExifTagData;
+  return aExifTagData;
 }
 
-void geoTagImage(const ExivImagePtr& image, ImageInfo aImgInfo, GeoTagData aGeoData)
+void geoTagImage(const ExivImagePtr& image, ImageInfo aImgInfo, GeoTagData aGeoData, ExifTagData bExifTagData)
 {
-  ExifTagData lExifTagData = createExifData(aImgInfo, aGeoData);
+  ExifTagData aExifTagData = createExifData(aImgInfo, aGeoData, bExifTagData);
   if (image.get() != 0)
   {
-    image->setExifData(lExifTagData.mExifData);
-    image->setXmpData(lExifTagData.mXmpData);
+    image->setExifData(aExifTagData.mExifData);
+    image->setXmpData(aExifTagData.mXmpData);
     image->writeMetadata();
 
     // NOTE: "fs" is empty file which needs to be created, in order for Exiv2 to write the image

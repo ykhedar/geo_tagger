@@ -17,7 +17,7 @@ roslaunch geo_tagger geo_tagger.launch
 
 ## Supported hardware
 This driver is designed for Allied Vision Manta G917 But it should work
-with other cameras as well. Only need to match the exif tag values in the `geo_tagger_helper.h` file
-
-TODO::
-1. Read ExifData from xml file
+with other cameras as well.
+In order to support a new camera, create a copy of the ```config\avt_manta.yaml``` and update the 
+exif parameters suited to the new camera. Then replace the name of the config file in the ```launch\geo_tagger.launch```
+file.

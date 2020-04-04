@@ -55,7 +55,7 @@ class GeoTagger
     {
           mGeoData.mCurrentBaroHeight = baroheight_message->data;
     }
-
+    ExifTagData get_camera_config(ros::NodeHandle nh);
     std::string mCamName, mImgName, mImgSaveLocation, mFileNameStart;
 
     ExifTagData mExifTagData;

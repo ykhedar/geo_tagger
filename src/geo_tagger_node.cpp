@@ -29,6 +29,7 @@ GeoTagger::GeoTagger(): mImgCount(0), mSaveStartSrvOn_(false), mTimer(std::chron
   mPrivateNH.param("gps_topic", gps_topic, std::string("uninitialised"));
   mPrivateNH.param("gps_dummy", mGPSDummy, false);
 
+  mExifTagData = get_camera_config(mPrivateNH);
 
   mImgSaveStartService = mNH.advertiseService(flight_save_start_srv, &GeoTagger::startGeoSave, this);
   mImgSaveStopService = mNH.advertiseService(flight_save_stop_srv, &GeoTagger::stopGeoSave, this);
@@ -52,7 +53,7 @@ GeoTagger::GeoTagger(): mImgCount(0), mSaveStartSrvOn_(false), mTimer(std::chron
   if (mGPSDummy)
   {
       ROS_WARN_STREAM("The GPS is in Dummy Mode. This is useful for test purpose only.");
-      mImgSaveLocation = getFlightSaveLocation(mFileNameStart, 13579, "ankdata_drone");
+      mImgSaveLocation = getFlightSaveLocation(mFileNameStart, 13579, "ros_images");
       createSaveLocation(mImgSaveLocation);
   }
 
@@ -107,7 +108,7 @@ void GeoTagger::imageCb(const sensor_msgs::CompressedImageConstPtr& message)
 
     // Save Geotagged Image as JPG
     ExivImagePtr limage = Exiv2::ImageFactory::open(&(message->data)[0], message->data.size());
-    geoTagImage(limage,mImgInfo, mGeoData);
+    geoTagImage(limage, mImgInfo, mGeoData, mExifTagData);
   }
 }
 
@@ -115,7 +116,7 @@ bool GeoTagger::startGeoSave(std_srvs::Trigger::Request& req, std_srvs::Trigger:
 {
   mSaveStartSrvOn_ = true;
   res.success = mSaveStartSrvOn_;
-  mImgSaveLocation = getFlightSaveLocation(mFileNameStart, 0, "ankdata_drone");
+  mImgSaveLocation = getFlightSaveLocation(mFileNameStart, 0, "ros_images");
   createSaveLocation(mImgSaveLocation);
   mImgInfo.mProjectName = mImgSaveLocation.substr(mImgSaveLocation.size()-13);
   mImgCount = 0;
@@ -129,4 +130,43 @@ bool GeoTagger::stopGeoSave(std_srvs::Trigger::Request& req, std_srvs::Trigger::
   ROS_INFO_STREAM("Requested (stopGeoSave) and succeded.");
   LOG_S(INFO)<<"Requested (stopGeoSave) and succeded.";
   return true;
+}
+
+ExifTagData GeoTagger::get_camera_config(ros::NodeHandle nh)
+{
+    ExifTagData lExifTagData;
+
+    // Get the camera config from ros parameter server.
+    std::string model, make, res_unit, x_res, y_res, focal_plane_x_res, focal_plane_y_res, focal_plane_res_unit, focal;
+    int cx, cy, fx, fy;
+    nh.param("Model", model, std::string("uninitialised"));
+    nh.param("Make", make, std::string("uninitialised"));
+    nh.param("ResolutionUnit", res_unit, std::string("uninitialised"));
+    nh.param("XResolution", x_res, std::string("uninitialised"));
+    nh.param("YResolution", y_res, std::string("uninitialised"));
+    nh.param("FocalPlaneXResolution", focal_plane_x_res, std::string("uninitialised"));
+    nh.param("FocalPlaneYResolution", focal_plane_y_res, std::string("uninitialised"));
+    nh.param("FocalPlaneResolutionUnit", focal_plane_res_unit, std::string("uninitialised"));
+    nh.param("FocalLength", focal, std::string("uninitialised"));
+    nh.param("cx", cx, 0);
+    nh.param("cy", cy, 0);
+    nh.param("fx", fx, 0);
+    nh.param("fy", fy, 0);
+                    
+    // Populate he lExifTagData.
+    lExifTagData.mExifData["Exif.Image.Model"]    = model;            // Ascii
+    lExifTagData.mExifData["Exif.Image.Make"]     = make;          // Ascii
+    lExifTagData.mExifData["Exif.Image.ResolutionUnit"]   = res_unit;              // Short, 2 for inches
+    lExifTagData.mExifData["Exif.Image.XResolution"]    = x_res;         // Rational
+    lExifTagData.mExifData["Exif.Image.YResolution"]    = y_res;         // Rational
+    lExifTagData.mExifData["Exif.Photo.FocalPlaneXResolution"]    = focal_plane_x_res; // Rational
+    lExifTagData.mExifData["Exif.Photo.FocalPlaneYResolution"]    = focal_plane_y_res; // Rational
+    lExifTagData.mExifData["Exif.Photo.FocalPlaneResolutionUnit"]    = focal_plane_res_unit;   // short, 3 for cm
+    lExifTagData.mExifData["Exif.Photo.FocalLength"]    = focal;           // Rational
+    lExifTagData.mXmpData["Xmp.exif.cx"] = cx;
+    lExifTagData.mXmpData["Xmp.exif.cy"] = cy;
+    lExifTagData.mXmpData["Xmp.exif.fx"] = fx;
+    lExifTagData.mXmpData["Xmp.exif.fy"] = fy;
+    
+    return lExifTagData;
 }
